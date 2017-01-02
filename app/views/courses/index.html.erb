@@ -25,6 +25,14 @@
             </tr>
 
             <tbody>
+        <p>
+        <div class="pull-right">
+        <span class="glyphicon glyphicon-export" style="color: rgb(255, 140, 60);"> Export</span>
+             <%= link_to "CSV", courses_path(format: "csv"),class: 'btn btn-info'  %>|
+             <%= link_to "Excel", courses_path(format: "xls"),class: 'btn btn-info'  %>
+                
+            </div>
+             </p>
             <% @course.each do |course| %>
                 <tr>
 

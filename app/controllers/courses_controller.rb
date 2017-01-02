@@ -70,6 +70,13 @@ class CoursesController < ApplicationController
   def index
     @course=current_user.teaching_courses if teacher_logged_in?
     @course=current_user.courses if student_logged_in?
+    @courses = Course.order(:name)
+    
+    respond_to do |format|
+      format.html
+      format.csv { send_data @courses.to_csv }
+      format.xls { send_data @courses.to_csv(col_sep: "\t") }
+    end
   end
 
 
