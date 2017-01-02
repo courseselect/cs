@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     end
     collection do
       get :list
+       get:search
+      get :refresh_search
     end
   end
 
