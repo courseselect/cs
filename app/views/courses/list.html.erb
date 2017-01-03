@@ -71,44 +71,38 @@
               <th>课程添加</th>
             </tr>
             </thead>
-            <tbody>
+ <tbody>
 
- <% @course_open.each do |course| %>
+            <% @course.each do |course| %>
                 <tr>
 
                   <td><%= course.course_code %></td>
-                 <td><%=  course.name %></td>
+                  
+                  <td><%= course.name %></td>
+                  
                   <td><%= course.credit %></td>
-                  <td><%= course.limit_num %></td>
+                  
+                  <% if course.limit_num.nil? %>
+                    <td>不限</td>
+                  <% else %>
+                    <td><%= course.limit_num %></td>
+                  <% end %>
+                  
                   <td><%= course.student_num %></td>
+                  
+                  <% if course.limit_num.nil? %>
+                    <td>不限</td>
+                  <% elsif course.student_num.nil? %>
+                    <td><%= course.limit_num %></td>
+                  <% else %>
+                    <td><%= course.limit_num - course.student_num %></td>
+                  <% end %>
+                  
                   <td><%= course.course_type %></td>
                   <td><%= course.teaching_type %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
-                      <td>
-                        <%= link_to select_course_path(course) do %>
-                            <button type="button" class="btn btn-sm btn-primary" >加入课程</button>
-                        <% end %>
-                      </td>
-
-                      </tr>
-            <% end %>
-            <% @course_close.each do |course| %>
-                <tr>
-
-                  <td><%= course.course_code %></td>
-                  <td><%=  course.name %></td>
-                  <td><%= course.credit %></td>
-                  <td><%= course.limit_num %></td>
-                  <td><%= course.student_num %></td>
-                  <td><%= course.course_type %></td>
-                  <td><%= course.teaching_type %></td>
-                  <td><%= course.exam_type %></td>
-                  <td><%= course.teacher.name %></td>
-                  <td>   <button type="button" class="btn btn-sm btn-primary" disabled="disabled">
-                    加入课程
-                  </button></td>
-            
+                  <td><%= link_to "加入课程", select_course_path(course), class: 'btn-sm btn-info' %></td>
 
                 </tr>
             <% end %>
