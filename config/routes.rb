@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get :open
       get :close
       get :prequit
+      get :xueweike
+      get:prexueweike
     end
     collection do
       get :list

@@ -24,6 +24,8 @@
               <th>课时/学分</th>
               <th>考试方式</th>
               <th>主讲教师</th>
+              <th>删除</th>
+              <th>是否为学位课</th>
             </tr>
 
             <tbody>
@@ -36,6 +38,12 @@
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
                   <td><%= link_to "删除", prequit_course_path(course), class: 'btn-sm btn-danger' %></td>
+                   <% grade=current_user.grades.find_by(course_id: course.id)%>
+                    <% if grade.xueweike == true %>
+                        <td><%= link_to "是",  prexueweike_course_path(course),  class: 'btn btn-xs btn-success' %></td>
+                      <% elsif grade.xueweike == false %>
+                        <td><%= link_to "否", prexueweike_course_path(course),  class: 'btn btn-xs btn-warning' %></td>
+                        <%end%>
                 </tr>
                 <% end %>
             <% end %>

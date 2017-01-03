@@ -132,7 +132,30 @@ class CoursesController < ApplicationController
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
-
+ def xueweike
+    @grades=current_user.grades.find_by(course_id: params[:id])
+    @courseName = Course.find_by_id(params[:id]).name
+    if @grades.xueweike == true then
+      @grades.update_attributes(:xueweike => false)
+      flash={:success => "#{@courseName}更改为非学位课"}
+    else
+      @grades.update_attributes(:xueweike => true)
+      flash={:success => "#{@courseName}更改为学位课"}
+    end
+    redirect_to courses_path, flash: flash
+ end
+def prexueweike
+    @grades=current_user.grades.find_by(course_id: params[:id])
+    @courseName = Course.find_by_id(params[:id]).name
+    if @grades.xueweike == true then
+      @grades.update_attributes(:xueweike => false)
+      flash={:success => "#{@courseName}更改为非学位课"}
+    else
+      @grades.update_attributes(:xueweike => true)
+      flash={:success => "#{@courseName}更改为学位课"}
+    end
+    redirect_to preindex_courses_path, flash: flash
+ end
 
   #-------------------------for both teachers and students----------------------
 
