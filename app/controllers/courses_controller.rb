@@ -71,23 +71,61 @@ class CoursesController < ApplicationController
 
   def select
     @course=Course.find_by_id(params[:id])
-    
-    if  @course.limit_num.nil? || @course.limit_num - @course.student_num > 0
-        current_user.courses<<@course
-        @course.student_num = @course.student_num + 1
-        flash={:suceess => "成功选择课程: #{@course.name}"}
+    if $is_opensystem == true
+       if  @course.limit_num.nil? || @course.limit_num - @course.student_num > 0
+           @course.student_num = @course.student_num + 1
+           @course.status= 2
+           @course.update_attribute(:status,2)
+           current_user.choosecoursesnumber = current_user.choosecoursesnumber+1
+           current_user.update_attribute(:choosecoursesnumber,current_user.choosecoursesnumber)
+           flash={:suceess => "成功选择课程: #{@course.name}"}
+       else
+           flash={danger: "课程已满: #{@course.name}"}
+       end
     else
-        flash={danger: "课程已满: #{@course.name}"}
+       @course.status=1
+       @course.update_attribute(:status,1)
+       current_user.prechoosecoursesnumber =current_user.prechoosecoursesnumber+1
+       current_user.update_attribute(:prechoosecoursesnumber,current_user.prechoosecoursesnumber)
+
+       flash={:suceess => "成功预选择课程: #{@course.name}"}
     end
     
-    redirect_to courses_path, flash: flash
+    current_user.courses<<@course
+    redirect_to list_courses_path, flash: flash
   end
     
+  def prequit
+    @course=Course.find_by_id(params[:id])
+    current_user.courses.delete(@course)
+    current_user.prechoosecoursesnumber = current_user.prechoosecoursesnumber-1
+    current_user.update_attribute(:prechoosecoursesnumber,current_user.prechoosecoursesnumber)
+    flash={:success => "成功取消预选课程: #{@course.name}"}
+    redirect_to preindex_courses_path, flash: flash
 
+  end
+  def preindex
+    @course=current_user.courses if student_logged_in?
+   end
+  def selectprecourses
+    @course=current_user.courses
+    @course.each do |course|
+      if course.status==1
+        course.update_attribute(:status ,2)
+        current_user.choosecoursesnumber =current_user.choosecoursesnumber+ 1
+        current_user.prechoosecoursesnumber =current_user.prechoosecoursesnumber-1
+      end
+    end
+    current_user.update_attribute(:choosecoursesnumber,current_user.choosecoursesnumber)
+    current_user.update_attribute(:prechoosecoursesnumber,current_user.prechoosecoursesnumber)
+    redirect_to courses_path
+  end
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
     @course.student_num =  @course.student_num - 1
+    current_user.choosecoursesnumber = current_user.choosecoursesnumber-1
+    current_user.update_attribute(:choosecoursesnumber,current_user.choosecoursesnumber)
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
@@ -97,7 +135,17 @@ class CoursesController < ApplicationController
 
   def index
     @course=current_user.teaching_courses if teacher_logged_in?
-    @course=current_user.courses if student_logged_in?
+    @course=current_user.courses 
+    if student_logged_in?
+      @course=current_user.courses
+      @selectedcourse=Array.new
+      @course.each do |course|
+        if course.status==2
+          @selectedcourse.push(course)
+        end
+      end
+      @course=@selectedcourse
+    end
     @courses = Course.order(:name)
     
     respond_to do |format|

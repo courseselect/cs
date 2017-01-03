@@ -10,8 +10,13 @@
         <% end %>
 
         <% if student_logged_in? %>
+         <% if $is_opensystem %>
             <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
               选修课程</a>
+          <% elsif $is_opensystem==false %>
+            <a data-toggle="collapse" data-parent="#accordion" href="#CourseCollapse"><span class="glyphicon glyphicon-user"></span>
+              预选课程</a>
+            <% end %>
         <% end %>
 
       </h4>
@@ -37,7 +42,7 @@
         <% end %>
 
         <% if student_logged_in? %>
-         <% if $is_opensystem==true %>
+          <% if $is_opensystem==true %>
             <li class="list-group-item">
               <%= link_to list_courses_path do %>
                   <span class="glyphicon glyphicon-chevron-right"></span> 选修课程
@@ -45,11 +50,30 @@
               <% end %>
             </li>
             <li class="list-group-item">
-              <%= link_to courses_path do %>
-                  <span class="glyphicon glyphicon-chevron-right"></span> 已选课程
-                  <span class="label label-info pull-right"><%= current_user.courses.length %></span>
-              <% end %>
+                  <%= link_to preindex_courses_path do %>
+                      <span class="glyphicon glyphicon-chevron-right"></span> 一键选课
+                      <span class="label label-info pull-right"><%= current_user.prechoosecoursesnumber %></span>
+                  <% end %>
             </li>
+            <li class="list-group-item">
+                  <%= link_to courses_path do %>
+                  <span class="glyphicon glyphicon-chevron-right"></span> 已选课程
+                  <span class="label label-info pull-right"><%= current_user.choosecoursesnumber %></span>
+                  <% end %>
+            </li>
+             <% elsif $is_opensystem==false %>
+                <li class="list-group-item">
+                  <%= link_to list_courses_path do %>
+                      <span class="glyphicon glyphicon-chevron-right"></span> 可选修课程
+                      <span class="label label-info pull-right"><%= (Course.all-current_user.courses).length %></span>
+                  <% end %>
+                </li>
+                <li class="list-group-item">
+                  <%= link_to preindex_courses_path do %>
+                      <span class="glyphicon glyphicon-chevron-right"></span> 已预选课程
+                      <span class="label label-info pull-right"><%=   current_user.prechoosecoursesnumber %></span>
+                  <% end %>
+                </li>
           <% end %>
         <% end %>
 

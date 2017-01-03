@@ -13,6 +13,9 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean :admin, default: false
       t.boolean :teacher, default: false
       t.boolean :is_actived, default: false
+      
+      t.integer :prechoosecoursesnumber, default: 0
+      t.integer :choosecoursesnumber, default: 0
       t.timestamps null: false
     end
 

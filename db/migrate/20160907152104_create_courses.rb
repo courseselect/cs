@@ -16,6 +16,7 @@ class CreateCourses < ActiveRecord::Migration
       t.belongs_to :teacher
 
       t.boolean :open, default: false
+      t.integer :status, default: 0
       
       t.timestamps null: false
     end

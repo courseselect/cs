@@ -23,11 +23,14 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
+      get :prequit
     end
     collection do
       get :list
-       get:search
+      get:search
       get :refresh_search
+      get :preindex
+      get :selectprecourses
     end
   end
 
