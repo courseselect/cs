@@ -53,8 +53,10 @@ ActiveRecord::Schema.define(version: 20160909105514) do
     t.string   "department"
     t.string   "password_digest"
     t.string   "remember_digest"
+    t.string   "active_code"
     t.boolean  "admin",           default: false
     t.boolean  "teacher",         default: false
+    t.boolean  "is_actived",      default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end

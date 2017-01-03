@@ -36,6 +36,10 @@ Rails.application.routes.draw do
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
+  
+  get 'sessions/getpwd' => 'sessions#getpwd'
+  post 'sessions/getpwd' => 'sessions#sendgetpwdemail'
+  get 'sessions/activate', to: 'sessions#pro_activate'
   delete 'sessions/logout' => 'sessions#destroy'
 
 

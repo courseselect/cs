@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>Welcome to CourseSelect Sit, <%= @user.name %></h1>
+<p>
+  You have successfully signed up to CourseSelect Site,
+  your username is: <%= @user.name %>.<br>
+</p>
+<p>
+  To active account, just follow this link:
+  <a href='http://localhost:3000/sessions/activate?name=<%=@user.name%>&active_code=<%= @user.active_code%>'>
+    http://localhost:3000/sessions/activate?name=<%=@user.name%>&active_code=<%= @user.active_code%>
+  </a>
+</p>
+<p>Thanks for joining and have a great day!</p>
+</body>
+</html>
