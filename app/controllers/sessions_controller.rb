@@ -59,5 +59,18 @@ class SessionsController < ApplicationController
     redirect_to root_path
 
   end
+   def openorclosesystem
+    if current_user.admin
+      if $is_opensystem == true
+        $is_opensystem=false
+        flash[:notice] = "选课系统关闭"
+      elsif $is_opensystem ==false
+        $is_opensystem=true
+        flash[:notice] = "选课系统开启"
+      end
+    end
+
+    redirect_to root_path
+  end
 
 end

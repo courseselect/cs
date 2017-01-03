@@ -47,7 +47,8 @@ User.create(
     department: "计算机与控制学院",
     password: "password",
     password_confirmation: "password",
-    admin: true
+    admin: true,
+    is_actived: true
 )
 
 teacher_map={
@@ -131,7 +132,8 @@ teacher_map.keys.each do |index|
       department: teacher_map[index][:department],
       password: "password",
       password_confirmation: "password",
-      teacher: true
+      teacher: true,
+      is_actived: true
   )
 
   teacher.teaching_courses.create!(
@@ -158,6 +160,7 @@ end
       department: StudentGenerator.department,
       password: "password",
       password_confirmation: "password",
+      is_actived: true
   )
 
   course_array=(1..34).to_a.sort { rand() - 0.5 }[1..rand(4..8)]

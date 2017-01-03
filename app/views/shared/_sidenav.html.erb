@@ -27,14 +27,17 @@
                   <span class="label label-info pull-right"><%= current_user.teaching_courses.length %></span>
               <% end %>
             </li>
+            <% if $is_opensystem==false %>
             <li class="list-group-item">
               <%= link_to new_course_path do %>
                   <span class="glyphicon glyphicon-chevron-right"></span> 创建新课程
               <% end %>
             </li>
+            <% end %>
         <% end %>
 
         <% if student_logged_in? %>
+         <% if $is_opensystem==true %>
             <li class="list-group-item">
               <%= link_to list_courses_path do %>
                   <span class="glyphicon glyphicon-chevron-right"></span> 选修课程
@@ -47,6 +50,7 @@
                   <span class="label label-info pull-right"><%= current_user.courses.length %></span>
               <% end %>
             </li>
+          <% end %>
         <% end %>
 
       </ul>
