@@ -65,7 +65,7 @@
                 <li class="list-group-item">
                   <%= link_to list_courses_path do %>
                       <span class="glyphicon glyphicon-chevron-right"></span> 可选修课程
-                      <span class="label label-info pull-right"><%= (Course.all-current_user.courses).length %></span>
+                       <span class="label label-info pull-right"><%= (Course.where(:open => true)-current_user.courses).length %></span>
                   <% end %>
                 </li>
                 <li class="list-group-item">

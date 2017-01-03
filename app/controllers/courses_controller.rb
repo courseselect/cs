@@ -104,9 +104,11 @@ class CoursesController < ApplicationController
     redirect_to preindex_courses_path, flash: flash
 
   end
+  
   def preindex
     @course=current_user.courses if student_logged_in?
-   end
+ end
+   
   def selectprecourses
     @course=current_user.courses
     @course.each do |course|
@@ -120,6 +122,7 @@ class CoursesController < ApplicationController
     current_user.update_attribute(:prechoosecoursesnumber,current_user.prechoosecoursesnumber)
     redirect_to courses_path
   end
+  
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
@@ -135,7 +138,6 @@ class CoursesController < ApplicationController
 
   def index
     @course=current_user.teaching_courses if teacher_logged_in?
-    @course=current_user.courses 
     if student_logged_in?
       @course=current_user.courses
       @selectedcourse=Array.new
@@ -148,12 +150,16 @@ class CoursesController < ApplicationController
     end
     @courses = Course.order(:name)
     
+    
+
+    #导出文件功能
     respond_to do |format|
       format.html
       format.csv { send_data @courses.to_csv }
       format.xls { send_data @courses.to_csv(col_sep: "\t") }
     end
   end
+  
 def search
     temp="%"+params[:name]+"%"
     @theparams=Course.find_by_id(1)
