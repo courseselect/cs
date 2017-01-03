@@ -15,8 +15,9 @@
         
         <br>
         <%= form_tag("/courses/search", method: "get") do %>
+         &nbsp&nbsp&nbsp&nbsp&nbsp
             <%= label_tag(:q, "课程检索 :",:style=>"color:blank") %>
-            
+         &nbsp&nbsp
             <select name="credit" id="credit">
               <option value="">课时/学分</option>
               <% @course.select(:credit).distinct.each do |ct| %>
@@ -24,29 +25,32 @@
                   <option value=<%= ct.credit %> <%= selected="selected" if @theparams[:credit]==ct.credit %>><%= ct.credit %></option>
               <% end %>
             </select>
-
+&nbsp&nbsp
             <select name="course_type" id="course_type">
               <option value="">课程属性</option>
               <% @course.select(:course_type).distinct.each do |ct| %>
                   <option value=<%= ct.course_type %> <%= selected="selected" if @theparams[:course_type]==ct.course_type %>><%= ct.course_type %></option>
               <% end %>
             </select>
-
+&nbsp&nbsp
             <select name="teaching_type" id="teaching_type">
               <option value="">授课方式</option>
               <% @course.select(:teaching_type).distinct.each do |ct| %>
               <option value=<%= ct.teaching_type %> <%= selected="selected" if @theparams[:teaching_type]==ct.teaching_type %>><%= ct.teaching_type %></option>
               <% end %>
             </select>
-
+&nbsp&nbsp
             <select name="exam_type" id="exam_type">
               <option value="">考试方式</option>
               <% @course.select(:exam_type).distinct.each do |ct| %>
                   <option value=<%= ct.exam_type %> <%= selected="selected" if @theparams[:exam_type]==ct.exam_type %>><%= ct.exam_type %></option>
               <% end %>
             </select>
+            &nbsp&nbsp
             <%= text_field_tag(:name, @theparams[:name] , placeholder: "课程名称") %>
+            &nbsp&nbsp
             <%= submit_tag("检索" ,class:"btn btn-md btn-primary") %>
+            &nbsp&nbsp|&nbsp&nbsp
  <%= link_to "重置", refresh_search_courses_path, class: 'btn btn-xs btn-warning '  %>
 
         <% end %>
