@@ -1,3 +1,16 @@
+<script>
+function toggle_checkall(field_name, state) {
+  var checkboxes = document.getElementsByTagName('input');
+  var count = checkboxes.length;
+  for (var i = 0; i < count; i++) {
+    if (checkboxes[i].type == "checkbox"
+        && checkboxes[i].name == field_name + "_ids[]") {
+      checkboxes[i].checked = state;
+    }
+  }
+}
+</script>
+
 <div class="container-fluid">
   <div class="row">
 
@@ -15,22 +28,24 @@
 
         <div class="panel-body">
           <table class="table table-responsive table-condensed table-hover">
+            <% sum = 0 %>
             <thead>
             <tr>
+              <th><input type="checkbox" onclick="toggle_checkall('depart', this.checked);" /></th>
               <th>课程编号</th>
               <th>课程名称</th>
               <th>课时/学分</th>
               <th>考试方式</th>
               <th>主讲教师</th>
               <% if teacher_logged_in? %>
-              <th>编辑</th>
-              <th>关闭</th>
-              <th>删除</th>
+                <th>编辑</th>
+                <th>关闭</th>
+                <th>删除</th>
               <% end %>
               <% if student_logged_in? %>
-               <th>删除</th>
-              <th>是否为学位课</th>
-                  <% end %>
+                <th>删除</th>
+                <th>是否为学位课</th>
+              <% end %>
             </tr>
 
             <tbody>
@@ -45,9 +60,13 @@
             <% @course.each do |course| %>
                 <tr>
 
+                  <td><%= check_box_tag "course_ids[]", course.id %></td>
                   <td><%= course.course_code %></td>
                   <td><%= course.name %></td>
                   <td><%= course.credit %></td>
+                  
+                  <% sum = sum.to_i + ((course.credit.to_s.split("/"))[course.credit.to_s.split("/").length - 1]).to_i%>
+                  
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
 
@@ -75,7 +94,8 @@
             <% end %>
             </tbody>
           </table>
-
+          <%= link_to "删除勾选课程", class: 'btn btn-xs btn-danger' %><br /><br />
+          <br />已选学分: <%= sum %>
         </div>
       </div>
     </div>

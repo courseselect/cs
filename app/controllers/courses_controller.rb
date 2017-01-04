@@ -74,6 +74,7 @@ class CoursesController < ApplicationController
     if $is_opensystem == true
        if  @course.limit_num.nil? || @course.limit_num - @course.student_num > 0
            @course.student_num = @course.student_num + 1
+           @course.update_attributes(:student_num => @course.student_num)
            @course.status= 2
            @course.update_attribute(:status,2)
            current_user.choosecoursesnumber = current_user.choosecoursesnumber+1
@@ -107,7 +108,7 @@ class CoursesController < ApplicationController
   
   def preindex
     @course=current_user.courses if student_logged_in?
- end
+  end
    
   def selectprecourses
     @course=current_user.courses
@@ -127,6 +128,7 @@ class CoursesController < ApplicationController
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
     @course.student_num =  @course.student_num - 1
+    @course.update_attributes(:student_num => @course.student_num)
     current_user.choosecoursesnumber = current_user.choosecoursesnumber-1
     current_user.update_attribute(:choosecoursesnumber,current_user.choosecoursesnumber)
     flash={:success => "成功退选课程: #{@course.name}"}
@@ -144,6 +146,7 @@ class CoursesController < ApplicationController
     end
     redirect_to courses_path, flash: flash
  end
+ 
 def prexueweike
     @grades=current_user.grades.find_by(course_id: params[:id])
     @courseName = Course.find_by_id(params[:id]).name
@@ -155,7 +158,7 @@ def prexueweike
       flash={:success => "#{@courseName}更改为学位课"}
     end
     redirect_to preindex_courses_path, flash: flash
- end
+end
 
   #-------------------------for both teachers and students----------------------
 
